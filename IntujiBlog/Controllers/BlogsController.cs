@@ -20,15 +20,15 @@ namespace IntujiBlog.Controllers
             _blogsServices = blogsServices;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<BlogsDisplayDto>>> GetAllBlogs()
         {
             var blogs = await _blogsServices.GetAllBlogsAsync();
             return Ok(blogs);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<BlogsDisplayDto>> GetBlog(Guid id)
+        [HttpGet("byid")]
+        public async Task<ActionResult<BlogsDisplayDto>> GetBlog([FromQuery]Guid id)
         {
             var blog = await _blogsServices.GetBlogsAsync(id);
             if (blog == null)
@@ -57,8 +57,8 @@ namespace IntujiBlog.Controllers
             return Ok(patchedBlog);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBlog(Guid id, BlogsUpdateDto blogDto)
+        [HttpPut]
+        public async Task<IActionResult> UpdateBlog([FromQuery]Guid id, BlogsUpdateDto blogDto)
         {
             var updatedBlog = await _blogsServices.UpdateBlogsAsync(id, blogDto);
             if (updatedBlog == null)
@@ -68,8 +68,8 @@ namespace IntujiBlog.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task <IActionResult> DeleteBlog(Guid id)
+        [HttpDelete]
+        public async Task <IActionResult> DeleteBlog([FromQuery]Guid id)
         {
             _blogsServices.DeleteBlogs(id);
             return NoContent();
